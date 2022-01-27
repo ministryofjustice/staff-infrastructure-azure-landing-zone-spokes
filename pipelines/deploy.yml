@@ -8,7 +8,7 @@ resources:
 variables:
   - group: 'github'
 
-jobs:
+stages:
 - template: yaml-templates/templates/template-terraform-deploy-stage.yml@templates
   parameters:
     githubPat: $(GITHUB_PAT)
