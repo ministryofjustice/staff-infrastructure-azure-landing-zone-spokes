@@ -4,6 +4,8 @@ resources:
       type: github
       name: ministryofjustice/staff-infrastructure-azure-landing-zone
 
+variables:
+  - group: 'github'
 
 jobs:
 - template: yaml-templates/templates/template-terraform-deploy-stage.yml@templates
