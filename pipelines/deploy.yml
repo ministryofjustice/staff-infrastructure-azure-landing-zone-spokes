@@ -1,4 +1,7 @@
-pr: none
+pr:
+  branches:
+    include:
+    - main
 
 trigger: none
 
