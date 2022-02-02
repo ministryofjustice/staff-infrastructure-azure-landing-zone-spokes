@@ -21,19 +21,3 @@ terraform {
 
   required_version = "1.1.4"
 }
-
-
-provider "azuread" {
-  tenant_id = var.tenant_id
-}
-
-provider "azurerm" {
-  features {}
-}
-
-provider "azuredevops" {
-
-  org_service_url       = "https://dev.azure.com/MoJ-OFFICIAL/"
-  personal_access_token = var.ado_token
-
-}

@@ -14,25 +14,85 @@ resources:
 
 variables:
   - group: 'github'
+  - name: preprod_adoEnv
+    ${{ if eq(variables['Build.Reason'],'PullRequest') }}:
+      value: preprod_noapproval
+    ${{ if ne(variables['Build.Reason'],'PullRequest') }}:
+      value: preprod_approval
+  - name: prod_adoEnv
+    ${{ if eq(variables['Build.Reason'],'PullRequest') }}:
+      value: prod_noapproval
+    ${{ if ne(variables['Build.Reason'],'PullRequest') }}:
+      value: prod_approval
+
 
 stages:
 - template: templates/template-terraform-deploy-stage.yml@templates
   parameters:
-    terraformVersion: 1.1.4
-    githubPat: $(GITHUB_PAT)
-    deployFlag: true
-    secureVarsFile: alz-spokes.tfvars
-    stageName: "Spokes"
-    spokeName: "Spokes"
-    environmentName: "Spokes"
-    tenant_id: ' '
-    subscription_id: ' '
-    repository: staff-infrastructure-azure-landing-zone-spokes
-    stageDisplayName: "Spokes"
+    adoEnv: dev_noapproval
     backendServiceArm: scVLZ
     backendAzureRmResourceGroupName: rg-terraform-statefiles-001
     backendAzureRmStorageAccountName: samojtfstate001
     backendAzureRmContainerName: tfstate
     backendAzureRmKey: "staff-infrastructure-azure-landing-zone-spokes.tfstate"
-    yamlenv: dev_noapproval
-    workingDirectory: '$(System.DefaultWorkingDirectory)/staff-infrastructure-azure-landing-zone-spokes/terraform/spokes'
+    githubPat: $(GITHUB_PAT)
+    secureVarsFile: alz-spokes.tfvars
+    stageName: Projects
+    spokeName: Projects
+    stageDisplayName: Projects
+    terraformVersion: 1.1.4
+    workingDirectory: '$(System.DefaultWorkingDirectory)/staff-infrastructure-azure-landing-zone-spokes/terraform/projects'
+
+- template: templates/template-terraform-deploy-stage.yml@templates
+  parameters:
+    adoEnv: dev_noapproval
+    backendServiceArm: scVLZ
+    backendAzureRmResourceGroupName: rg-terraform-statefiles-001
+    backendAzureRmStorageAccountName: samojtfstate001
+    backendAzureRmContainerName: tfstate
+    backendAzureRmKey: staff-infrastructure-azure-landing-zone-apps.tfstate
+    dependsOn: ['projects']
+    environment: dev
+    githubPat: $(GITHUB_PAT)
+    secureVarsFile: alz-spokes.tfvars
+    stageName: dev_service_connection
+    spokeName: dev_service_connection
+    stageDisplayName: Dev Service Connections
+    terraformVersion: 1.1.4
+    workingDirectory: '$(System.DefaultWorkingDirectory)/staff-infrastructure-azure-landing-zone-spokes/terraform/environments/dev'
+
+- template: templates/template-terraform-deploy-stage.yml@templates
+  parameters:
+    adoEnv: $(preprod_adoEnv)
+    backendServiceArm: scPrepElevVLZ
+    backendAzureRmResourceGroupName: rg-prep-tfstate-001
+    backendAzureRmStorageAccountName: samojtfstate002
+    backendAzureRmContainerName: tfstate
+    backendAzureRmKey: staff-infrastructure-azure-landing-zone-apps.tfstate
+    dependsOn: ['projects']
+    environment: preprod
+    githubPat: $(GITHUB_PAT)
+    secureVarsFile: alz-spokes.tfvars
+    stageName: preprod_service_connection
+    spokeName: preprod_service_connection
+    stageDisplayName: PreProd Service Connections
+    terraformVersion: 1.1.4
+    workingDirectory: '$(System.DefaultWorkingDirectory)/staff-infrastructure-azure-landing-zone-spokes/terraform/environments/preprod'
+
+- template: templates/template-terraform-deploy-stage.yml@templates
+  parameters:
+    adoEnv: $(prod_adoEnv)
+    backendServiceArm: scProdElevVLZ
+    backendAzureRmResourceGroupName: rg-prod-tfstate-001
+    backendAzureRmStorageAccountName: samojtfstate003
+    backendAzureRmContainerName: tfstate
+    backendAzureRmKey: staff-infrastructure-azure-landing-zone-apps.tfstate
+    dependsOn: ['projects']
+    environment: prod
+    githubPat: $(GITHUB_PAT)
+    secureVarsFile: alz-spokes.tfvars
+    stageName: prod_service_connection
+    spokeName: prod_service_connection
+    stageDisplayName: Prod Service Connections
+    terraformVersion: 1.1.4
+    workingDirectory: '$(System.DefaultWorkingDirectory)/staff-infrastructure-azure-landing-zone-spokes/terraform/environments/prod'

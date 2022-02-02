@@ -2,7 +2,7 @@
 
 
 resource "azuread_application" "application" {
-  display_name = var.display_name
+  display_name = var.app_display_name
   owners       = var.owners
 
   dynamic "required_resource_access" {
@@ -42,13 +42,15 @@ resource "azuread_application_password" "application_password" {
 }
 
 resource "azurerm_role_assignment" "role_assignment" {
-  scope                = "/subscriptions/${var.subscription_id}"
-  role_definition_name = "MoJO - LandingZone - Role - Contributor and resource lock"
+  for_each             = { for assignment in var.role_assignments : assignment.id => assignment }
+  scope                = each.value["scope"]
+  role_definition_name = each.value["role_name"]
   principal_id         = azuread_service_principal.service_principal.object_id
 }
 
+
 data "azuredevops_project" "project" {
-  name = var.project_name
+  name = var.ado_project_name
 }
 
 resource "azuredevops_serviceendpoint_azurerm" "endpointazure" {

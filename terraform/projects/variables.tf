@@ -1,8 +1,16 @@
-variable "ado_token" {}
+variable "ado_token" {
+  type        = string
+  sensitive   = true
+  description = "This is the token used for the azure devops api (terraform provider)"
+}
 
-variable "github_token" {}
+variable "github_token" {
+  type        = string
+  sensitive   = true
+  description = "This is the token used for the github api (terraform provider)"
+}
 
-variable "spoke" {
+variable "projects" {
   type = map(object({
     project_description = string
     repository_details = object({
@@ -18,6 +26,7 @@ variable "spoke" {
 
     })
   }))
+  description = "This contains details of the project and github repository for the project"
 }
 
 

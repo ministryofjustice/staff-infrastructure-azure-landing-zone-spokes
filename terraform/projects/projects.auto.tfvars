@@ -1,4 +1,4 @@
-spoke = {
+projects = {
   "staff-infrastructure-testspoke" = {
     project_description = "This is a test"
     repository_details = {

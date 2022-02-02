@@ -1,5 +1,5 @@
 resource "azuredevops_project" "project" {
-  for_each    = var.spoke
+  for_each    = var.projects
   name        = each.key
   description = each.value.project_description
   visibility  = "private"
@@ -22,7 +22,7 @@ resource "github_repository" "spoke_repo" {
 }
 
 locals {
-  repository_details = { for repo in var.spoke : repo.repository_details.name => defaults(repo.repository_details, {
+  repository_details = { for repo in var.projects : repo.repository_details.name => defaults(repo.repository_details, {
     archive_on_destroy     = true
     delete_branch_on_merge = true
     has_projects           = false

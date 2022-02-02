@@ -5,14 +5,16 @@ data "azuredevops_project" "project" {
 }
 
 module "service-connection" {
-  for_each              = var.applications
-  source                = "../../modules/ado-service-connection"
-  create_password       = each.value.create_password
-  display_name          = each.value.display_name
-  owners                = each.value.owners
-  project_name          = each.key
-  service_endpoint_name = each.value.service_endpoint_name
-  tenant_id             = var.tenant_id
-  subscription_id       = each.value.subscription_id
-  subscription_name     = each.value.subscription_name
+  for_each                 = var.applications
+  source                   = "../../modules/ado-service-connection"
+  ado_project_name         = each.key
+  app_display_name         = each.value.app_display_name
+  create_password          = each.value.create_password
+  owners                   = each.value.owners
+  required_resource_access = each.value.required_resource_access
+  role_assignments         = each.value.role_assignments
+  service_endpoint_name    = each.value.service_endpoint_name
+  tenant_id                = var.tenant_id
+  subscription_id          = each.value.subscription_id
+  subscription_name        = each.value.subscription_name
 }
