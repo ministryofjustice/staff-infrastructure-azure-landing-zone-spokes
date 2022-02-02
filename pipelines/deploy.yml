@@ -27,6 +27,7 @@ stages:
     environmentName: "Spokes"
     tenant_id: ' '
     subscription_id: ' '
+    repository: staff-infrastructure-azure-landing-zone-spokes
     stageDisplayName: "Spokes"
     backendServiceArm: scVLZ
     backendAzureRmResourceGroupName: rg-terraform-statefiles-001
