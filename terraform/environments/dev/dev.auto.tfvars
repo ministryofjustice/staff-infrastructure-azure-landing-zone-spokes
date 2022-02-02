@@ -1,4 +1,4 @@
-applications= {
+applications = {
   # "staff-infrastructure-testspoke" = {
   #   create_password = true
   #   display_name = "MoJO-DEVL-TestSpoke-LandingZone"

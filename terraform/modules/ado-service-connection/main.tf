@@ -54,7 +54,7 @@ data "azuredevops_project" "project" {
 resource "azuredevops_serviceendpoint_azurerm" "endpointazure" {
   project_id            = data.azuredevops_project.project.id
   service_endpoint_name = var.service_endpoint_name
-  description = "Managed by Terraform"
+  description           = "Managed by Terraform"
   credentials {
     serviceprincipalid  = azuread_service_principal.service_principal.id
     serviceprincipalkey = azuread_application_password.application_password[0].value
