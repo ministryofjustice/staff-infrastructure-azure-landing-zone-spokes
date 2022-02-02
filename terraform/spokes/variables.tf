@@ -1,3 +1,5 @@
+variable "ado_token" {}
+
 variable "github_token" {}
 
 variable "spoke" {
