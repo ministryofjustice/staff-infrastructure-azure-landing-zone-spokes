@@ -1,15 +1,19 @@
+pr: none
+
+trigger: none
+
 resources:
   repositories:
     - repository: templates
       type: github
       endpoint: ministryofjustice
-      name: ministryofjustice/staff-infrastructure-azure-landing-zone
+      name: ministryofjustice/staff-infrastructure-alz-templates
 
 variables:
   - group: 'github'
 
 stages:
-- template: yaml-templates/templates/template-terraform-deploy-stage.yml@templates
+- template: templates/template-terraform-deploy-stage.yml@templates
   parameters:
     terraformVersion: 1.1.4
     githubPat: $(GITHUB_PAT)
