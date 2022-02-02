@@ -1,5 +1,5 @@
 data "github_team" "team" {
-  slug     = var.team_slug
+  slug = var.team_slug
 }
 
 resource "github_team_repository" "some_team_repo" {

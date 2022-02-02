@@ -33,7 +33,7 @@ provider "azurerm" {
 
 provider "azuredevops" {
 
-  org_service_url = "https://dev.azure.com/MoJ-OFFICIAL/"
+  org_service_url       = "https://dev.azure.com/MoJ-OFFICIAL/"
   personal_access_token = var.ado_token
 
 }
