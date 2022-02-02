@@ -18,6 +18,7 @@ stages:
     terraformVersion: 1.1.4
     githubPat: $(GITHUB_PAT)
     deployFlag: true
+    secureVarsFile: alz-spokes.tfvars
     stageName: "Spokes"
     spokeName: "Spokes"
     environmentName: "Spokes"
