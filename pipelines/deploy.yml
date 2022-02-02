@@ -30,4 +30,4 @@ stages:
     backendAzureRmContainerName: tfstate
     backendAzureRmKey: "staff-infrastructure-azure-landing-zone-spokes.tfstate"
     yamlenv: dev_noapproval
-    workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/spokes'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/staff-infrastructure-azure-landing-zone-spokes/terraform/spokes'
