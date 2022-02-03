@@ -19,7 +19,7 @@ Note that the order above is important as it's not possible to create a service 
 
 You will need a github and azure devops token to develop or test your changes.  The tokens need to have the following permissions, see below
 
-Create a file like [sample file](environments/../terraform/sample-alz-spokes.tfvars), ensure that you name it secrets.tfvars (this will not be committed as it's in the gitignore)  and store your tokens there.
+Create a file like [sample file](environments/../terraform/sample-alz-spokes.tfvars), ensure that you name it secrets.auto.tfvars (this will not be committed as it's in the gitignore)  and store your tokens there.
 
 *Important*
 
@@ -43,11 +43,27 @@ Read, Write and Manage for projects
 
 ## Code Structure
 
+Note that the names of the projects in both root modules need to match but the service connection root module does have check for existing projects, which will ensure that the pipeline will fail if names differ
 ### Projects And Repositories
 
 The code that creates azure devops projects and the github repositories is in the [projects directory](terraform/projects)
 
 The configuration of a new project is achieved using [projects.auto.tfvars](terraform/projects/projects.auto.tfvars)
+
+Sample
+
+```hcl
+projects = {
+  "staff-infrastructure-testspoke" = {
+    project_description = "This is a test"
+    repository_details = {
+      description = "This is a test still"
+      name        = "staff-infrastructure-testspoke"
+      team_slug   = "cloud-ops-alz-admins"
+    }
+  }
+}
+```
 
 ### Service Connections
 
@@ -58,6 +74,29 @@ As the config will be different across environments, each service connection wil
  - [dev.auto.tfvars](terraform/environments/dev/dev.auto.tfvars)
  - [preprod.auto.tfvars](terraform/environments/preprod/preprod.auto.tfvars)
  - [prod.auto.tfvars](terraform/environments/prod/prod.auto.tfvars)
+
+
+
+```hcl
+applications = {
+  "staff-infrastructure-testspoke" = {
+    app_display_name         = "MoJO-DEVL-TestSpoke-LandingZone"
+    create_password          = true
+    owners                   = []
+    required_resource_access = []
+    role_assignments = [
+      {
+        id        = "Testing_Contributor_n_Resource_Lock",
+        role_name = "MoJO - LandingZone - Role - Contributor and resource lock",
+        scope     = "/subscriptions/4b068872-d9f3-41bc-9c34-ffac17cf96d6",
+      }
+    ]
+    service_endpoint_name = "scDevTest"
+    subscription_id       = "4b068872-d9f3-41bc-9c34-ffac17cf96d6"
+    subscription_name     = "MoJ-OFFICIAL-Devl-Spoke-Testing"
+  }
+}
+```
 
 ## Pipeline
 
@@ -88,3 +127,4 @@ This might seem somewhat convoluted but I'm not 100% how to do it properly, name
 
 - Manage project memberships
 - Script Github Service Connection, e.g. using Powershell
+- Improve development workflow to avoid having to create a secrets file

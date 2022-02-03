@@ -4,4 +4,4 @@
 
 *.plan
 
-secrets.tfvars
+secrets.auto.tfvars
