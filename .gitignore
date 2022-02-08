@@ -1,1 +1,7 @@
 .env
+
+.terraform
+
+*.plan
+
+secrets.auto.tfvars
